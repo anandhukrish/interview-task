@@ -1,5 +1,4 @@
 import { MappedStateData } from "@/store/covid/covid.slice";
-import React from "react";
 
 const MapPopupCard = ({ region }: { region: MappedStateData }) => {
   return (

@@ -43,7 +43,7 @@ const Home = () => {
     <>
       <Header />
       <main>
-        <div className="container mx-auto p-2 flex flex-col">
+        <div className="container mx-auto px-2 sm:px-0 flex flex-col">
           <div>
             <h1 className="text-xl md:text-2xl font-bold mb-5">Summary</h1>
             <SummaryCards />
@@ -54,11 +54,11 @@ const Home = () => {
             <MapCard />
           </div>
           <Separator className="my-5" />
-          <div className="grid grid-cols-2 gap-5">
-            <Card>
+          <div className="grid lg:grid-cols-2 gap-5">
+            <Card className="p-5">
               <PieChart />
             </Card>
-            <Card>
+            <Card className="p-5">
               <LineChart />
             </Card>
           </div>

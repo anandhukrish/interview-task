@@ -1,4 +1,3 @@
-import React from "react";
 import CaseSummaryCard from "./case-summary-card";
 import { Activity, Heart, Skull, Users } from "lucide-react";
 import { useAppSelector } from "@/store";
@@ -15,7 +14,7 @@ const SummaryCards = () => {
   const covidDatatoBeShown =
     filteredData.length === 0 ? allCountrySummary : filteredData[0];
   return (
-    <div className="grid mdgrid-cols-2 lg:grid-cols-4 gap-5">
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
       <CaseSummaryCard
         title="Total Cases"
         count={covidDatatoBeShown.totalCases}

@@ -68,3 +68,7 @@
 [data-radix-popper-content-wrapper] {
   z-index: 999 !important;
 }
+
+.js-plotly-plot .plot-container .main-svg {
+  width: 100% !important;
+}

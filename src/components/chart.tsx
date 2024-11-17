@@ -37,10 +37,11 @@ export function PieChart() {
             },
           },
         ]}
+        useResizeHandler
         layout={{
-          height: 500,
-          width: 500,
           autosize: true,
+          width: 450,
+          height: 400,
           title: "COVID-19 Case Distribution",
           showlegend: true,
           margin: {
@@ -49,6 +50,7 @@ export function PieChart() {
         }}
         config={{
           displayModeBar: false,
+          responsive: true,
         }}
       />
     </div>
@@ -78,18 +80,6 @@ export function LineChart() {
   const recovered = timeSeriesData.map((date) => date.recovered);
   const dates = timeSeriesData.map((data) => data.date);
 
-  console.log(
-    "active:",
-    activeCases,
-    " deaths",
-    deaths,
-    "total",
-    total,
-    "recovered",
-    recovered,
-    dates
-  );
-
   const data: Data[] = useMemo(
     () => [
       {
@@ -97,7 +87,7 @@ export function LineChart() {
         y: activeCases,
         type: "scatter",
         mode: "lines+markers",
-        marker: { color: "blue" },
+        marker: { color: "#3535cdec" },
         name: "Active Cases",
       },
       {
@@ -105,7 +95,7 @@ export function LineChart() {
         y: recovered,
         type: "scatter",
         mode: "lines+markers",
-        marker: { color: "yellow" },
+        marker: { color: "#9c9c2f" },
         name: "Recovered Cases",
       },
       {
@@ -113,7 +103,7 @@ export function LineChart() {
         y: deaths,
         type: "scatter",
         mode: "lines+markers",
-        marker: { color: "red" },
+        marker: { color: "#da3b3b" },
         name: "Deaths",
       },
       {
@@ -121,7 +111,7 @@ export function LineChart() {
         y: total,
         type: "scatter",
         mode: "lines+markers",
-        marker: { color: "green" },
+        marker: { color: "#1add1a" },
         name: "Total Cases",
       },
     ],
@@ -131,7 +121,7 @@ export function LineChart() {
   const layout: Partial<Layout> = useMemo(
     () => ({
       height: 500,
-      width: 600,
+      width: 550,
       title: "COVID-19 Summary Line Chart",
       xaxis: { title: "Date" },
       yaxis: { title: "Count" },
@@ -139,6 +129,11 @@ export function LineChart() {
       autosize: true,
       margin: {
         pad: 20,
+      },
+      hoverlabel: {
+        font: {
+          color: "#000",
+        },
       },
     }),
     []
@@ -151,7 +146,9 @@ export function LineChart() {
         layout={layout}
         config={{
           displayModeBar: false,
+          responsive: true,
         }}
+        useResizeHandler
       />
     </div>
   );
