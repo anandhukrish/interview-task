@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { LatLngExpression } from "leaflet";
 
 type CountrySummary = {
@@ -73,9 +73,17 @@ export const getCovidStatus = createAsyncThunk(
         coords: getCoordinates(state.loc),
       }));
       return { CountrySummaryData, mappedCountryData };
-    } catch {
-      console.log(rejectWithValue);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const errorMessage =
+          error.response && error.response.data && error.response.data.message
+            ? error.response.data.message
+            : error.message;
+
+        return rejectWithValue(errorMessage);
+      }
     }
+    return rejectWithValue("An unexpected error occurred.");
   }
 );
 
@@ -164,9 +172,10 @@ const covidSlice = createSlice({
           state.regionalData = action.payload?.mappedCountryData;
         }
       })
-      .addCase(getCovidStatus.rejected, (state, { payload }) => {
+      .addCase(getCovidStatus.rejected, (state, action) => {
+        console.log(action);
         state.loading = false;
-        state.error = payload as string;
+        state.error = action.payload as string;
       });
   },
 });

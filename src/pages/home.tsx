@@ -1,4 +1,5 @@
 import { LineChart, PieChart } from "@/components/chart";
+import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header";
 import MapCard from "@/components/map-card";
 import SummaryCards from "@/components/summary-cards";
@@ -63,7 +64,7 @@ const Home = () => {
           </div>
         </div>
       </main>
-      <footer> footer</footer>
+      <Footer />
     </>
   );
 };

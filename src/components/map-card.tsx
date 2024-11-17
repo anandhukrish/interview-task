@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-import { Card, CardTitle } from "./ui/card";
+import { Card } from "./ui/card";
 import { useAppSelector } from "@/store";
 import { MappedCountryData, MappedStateData } from "@/store/covid/covid.slice";
-import { LatLngExpression } from "leaflet";
+import { LatLngExpression, Marker as LeafletMarker } from "leaflet";
+import MapPopupCard from "./layout/map-popup-card";
 
 const MapCard = () => {
   const { allCountrySummary, regionalData, selectedState } = useAppSelector(
@@ -36,13 +37,12 @@ const MapCard = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {regionalData &&
-          regionalData.length > 0 &&
+        {regionalData.length > 0 &&
           regionalData.map((region, i) => (
             <React.Fragment key={`regin-${i}`}>
               <Marker position={region.coords}>
                 <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
+                  <MapPopupCard region={region} />
                 </Popup>
               </Marker>
             </React.Fragment>
@@ -52,7 +52,12 @@ const MapCard = () => {
         )}
 
         {covidDatatoBeShown && isMappedStateData(covidDatatoBeShown) && (
-          <ChangeMapCenter coords={covidDatatoBeShown.coords} />
+          <>
+            <ChangeMapCenter
+              coords={covidDatatoBeShown.coords}
+              region={covidDatatoBeShown}
+            />
+          </>
         )}
       </MapContainer>
     </Card>
@@ -61,11 +66,33 @@ const MapCard = () => {
 
 export default MapCard;
 
-function ChangeMapCenter({ coords }: { coords: LatLngExpression }) {
+function ChangeMapCenter({
+  coords,
+  region,
+}: {
+  coords: LatLngExpression;
+  region?: MappedStateData;
+}) {
   const map = useMap();
+  const popupRef = useRef<LeafletMarker | null>(null);
+
   useEffect(() => {
-    map.setView(coords, 6);
+    map.setView(coords, 6, {
+      animate: true,
+      duration: 0.5,
+    });
+    if (popupRef.current) {
+      popupRef.current.openPopup();
+    }
   }, [coords]);
 
-  return null;
+  if (!region) return null;
+
+  return (
+    <Marker position={region.coords} ref={popupRef}>
+      <Popup>
+        <MapPopupCard region={region} />
+      </Popup>
+    </Marker>
+  );
 }

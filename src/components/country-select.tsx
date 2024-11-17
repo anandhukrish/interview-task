@@ -10,7 +10,9 @@ import { setSelect } from "@/store/covid/covid.slice";
 
 const CountrySelect = () => {
   const dispatch = useAppDispatch();
-  const { regionalData } = useAppSelector((state) => state.covid);
+  const { regionalData, selectedState } = useAppSelector(
+    (state) => state.covid
+  );
 
   const selectOptions = [
     "All States",
@@ -19,7 +21,7 @@ const CountrySelect = () => {
   return (
     <div>
       <Select
-        defaultValue="All States"
+        defaultValue={selectedState}
         onValueChange={(value) => dispatch(setSelect(value))}
       >
         <SelectTrigger className="w-[180px]">
